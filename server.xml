@@ -165,7 +165,7 @@
                        prefix="localhost_access_log" suffix=".txt"
                        pattern="%h %l %u %t &quot;%r&quot; %s %b"/>
 
-                <Context path="/" docBase="tennis_match_scoreboard-1.0"/>
+                <Context path="/" docBase="weather_servlet_app-1.0"/>
             </Host>
         </Engine>
     </Service>
