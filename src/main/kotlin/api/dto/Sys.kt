@@ -1,5 +1,8 @@
 package api.dto
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Sys(
     val country: String?,
     val id: Int?,

@@ -1,5 +1,7 @@
 plugins {
-    kotlin("jvm") version "1.9.23"
+    kotlin("jvm") version "2.0.0"
+    kotlin("plugin.serialization") version "2.0.0"
+
     war
 }
 
@@ -21,6 +23,8 @@ dependencies {
     implementation(libs.slf4j.log4j12)
     // https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf
     implementation(libs.thymeleaf)
+
+    implementation(libs.serialization)
 
     testImplementation(kotlin("test"))
 }
