@@ -4,6 +4,7 @@ jakarta_servlet_api_version = "6.1.0-M2"
 slf4j_log4j12_version = "3.0.0-beta2"
 postgresql_version = "42.7.3"
 thymeleaf_version = "3.1.2.RELEASE"
+serialization_version = "1.6.3"
 
 [libraries]
 jakarta-servlet-api = { module = "jakarta.servlet:jakarta.servlet-api", version.ref = "jakarta_servlet_api_version" }
@@ -11,4 +12,5 @@ hibernate-core = { module = "org.hibernate.orm:hibernate-core", version.ref = "h
 postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql_version" }
 slf4j-log4j12 = { module = "org.apache.logging.log4j:log4j-slf4j-impl", version.ref = "slf4j_log4j12_version" }
 thymeleaf = { module = "org.thymeleaf:thymeleaf", version.ref = "thymeleaf_version" }
+serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization_version" }
 

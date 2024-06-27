@@ -1,5 +1,10 @@
 package api.dto
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Rain(
-    val `1h`: Double
+    @SerialName("1h")
+    val oneHour: Double
 )
