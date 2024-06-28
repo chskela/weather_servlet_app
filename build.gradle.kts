@@ -15,6 +15,8 @@ repositories {
 dependencies {
     // https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api
     compileOnly(libs.jakarta.servlet.api)
+    // https://mvnrepository.com/artifact/jakarta.servlet.jsp.jstl/jakarta.servlet.jsp.jstl-api
+    implementation(libs.jstl.api)
     // https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core
     implementation(libs.hibernate.core)
     // https://mvnrepository.com/artifact/org.postgresql/postgresql
