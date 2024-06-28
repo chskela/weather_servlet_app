@@ -20,55 +20,32 @@
                     aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <form class="d-flex" role="search">
+                <form class="d-flex" role="search" th:attr="action=@{/search}">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
                 <div>
-                    <!-- TODO  if else-->
-                    <div th:if="${notLogin}" class="col d-flex justify-content-end">
-                        <button class="btn btn-outline-primary px-3" href="sign-in">Sign in</button>
-                        <button class="btn btn-primary px-3 ms-2" href="sign-up">Sign up</button>
+                    <div th:if="${user eq null}" class="col d-flex justify-content-end">
+                        <a class="btn btn-outline-primary px-3" href="sign-in">Sign in</a>
+                        <a class="btn btn-primary px-3 ms-2" href="sign-up">Sign up</a>
                     </div>
-                    <div th:unless="${isLogin}" class="col d-flex justify-content-end">
-                        <span class="d-inline-block text-center px-3 align-middle my-auto">Alex</span>
+                    <div th:unless="${user eq null}" class="col d-flex justify-content-end">
+                        <span class="d-inline-block text-center px-3 align-middle my-auto"
+                            th:text="${user.name}">Login</span>
                         <button class="btn btn-primary px-3 ms-2" href="sign-up">Logout</button>
                     </div>
                 </div>
             </div>
         </nav>
         <h1>Weather Forecast Servlet Application!</h1>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
+
+        <div class="row row-cols-3 g-3" th:each="weather : ${weathers}">
             <div class="col">
                 <div class="card h-100">
                     <img src="..." class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title">Moscow</h5>
-                        <p class="card-text">35 C</p>
-                    </div>
-                    <div class="card-footer">
-                        <button type="button" class="btn btn-danger">Remove</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Moscow</h5>
-                        <p class="card-text">35 C</p>
-                    </div>
-                    <div class="card-footer">
-                        <button type="button" class="btn btn-danger">Remove</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Moscow</h5>
-                        <p class="card-text">35 C</p>
+                        <h5 class="card-title" th:text="${weather.name}">Moscow</h5>
+                        <p class="card-text" th:text="${weather.main.temp}">35 C</p>
                     </div>
                     <div class="card-footer">
                         <button type="button" class="btn btn-danger">Remove</button>
