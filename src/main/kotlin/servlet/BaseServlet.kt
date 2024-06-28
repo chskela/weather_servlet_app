@@ -1,8 +1,15 @@
 package servlet
 
+import api.dto.WeatherData
+import exception.BadSessionException
+import exception.CookieNotFoundException
+import exception.SessionNotFoundException
+import jakarta.servlet.ServletConfig
+import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServlet
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import models.entities.Session
 import org.thymeleaf.ITemplateEngine
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.WebContext
@@ -10,28 +17,61 @@ import org.thymeleaf.templatemode.TemplateMode
 import org.thymeleaf.templateresolver.WebApplicationTemplateResolver
 import org.thymeleaf.web.IWebApplication
 import org.thymeleaf.web.servlet.JakartaServletWebApplication
+import java.time.LocalDateTime
 
-class BaseServlet : HttpServlet() {
-    private lateinit var context: WebContext
-    private val application = JakartaServletWebApplication.buildApplication(servletContext)
-    val templateEngine: ITemplateEngine = buildTemplateEngine(application)
+abstract class BaseServlet : HttpServlet() {
+    private lateinit var application: JakartaServletWebApplication
+    lateinit var templateEngine: ITemplateEngine
+    lateinit var context: WebContext
+
+    override fun init(config: ServletConfig) {
+        application = JakartaServletWebApplication.buildApplication(config.servletContext)
+        templateEngine = buildTemplateEngine(application)
+        super.init()
+    }
+
+    override fun service(req: HttpServletRequest, resp: HttpServletResponse) {
+        val webExchange = application.buildExchange(req, resp)
+        context = WebContext(webExchange, webExchange.locale)
+
+        try {
+            super.service(req, resp)
+        } catch (e: CookieNotFoundException){
+            context.setVariable("weathers", emptyList<WeatherData>())
+            context.setVariable("login", null)
+            templateEngine.process("index", context, resp.writer)
+        } catch (e: SessionNotFoundException){
+            context.setVariable("weathers", emptyList<WeatherData>())
+            context.setVariable("login", null)
+            templateEngine.process("index", context, resp.writer)
+        } catch (e: BadSessionException) {
+            context.setVariable("weathers", emptyList<WeatherData>())
+            context.setVariable("login", null)
+            templateEngine.process("index", context, resp.writer)
+        }
+
+    }
 
     private fun buildTemplateEngine(application: IWebApplication): ITemplateEngine {
-        val templateReolver = WebApplicationTemplateResolver(application)
-        templateReolver.templateMode = TemplateMode.HTML
-        templateReolver.prefix = "/WEB-INF/templates/"
-        templateReolver.suffix = ".html"
-        templateReolver.characterEncoding = "UTF-8"
-        templateReolver.cacheTTLMs = 3600000L
-        templateReolver.isCacheable = true
+        val templateResolver = WebApplicationTemplateResolver(application)
+        templateResolver.templateMode = TemplateMode.HTML
+        templateResolver.prefix = "/WEB-INF/templates/"
+        templateResolver.suffix = ".html"
+        templateResolver.characterEncoding = "UTF-8"
+        templateResolver.cacheTTLMs = 3600000L
+        templateResolver.isCacheable = false
 
         val templateEngine = TemplateEngine()
-        templateEngine.setTemplateResolver(templateReolver)
+        templateEngine.setTemplateResolver(templateResolver)
         return templateEngine
     }
 
-    fun setContext(request: HttpServletRequest, response: HttpServletResponse) {
-        val webExchange = application.buildExchange(request, response)
-        context = WebContext(webExchange, webExchange.locale)
+    protected fun findCookieBySessionId(cookies: List<Cookie>, sessionId: String): Result<Cookie> {
+        val cookie = cookies.find { it.name == sessionId }
+        return if (cookie != null) {
+            Result.success(cookie)
+        } else Result.failure(CookieNotFoundException(sessionId))
     }
+
+    protected fun isBadSession(session: Session): Boolean = session.expiresAt.isAfter(LocalDateTime.now())
 }
