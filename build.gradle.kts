@@ -28,6 +28,8 @@ dependencies {
 
     implementation(libs.serialization)
 
+    implementation(libs.coroutines)
+
     testImplementation(kotlin("test"))
 }
 

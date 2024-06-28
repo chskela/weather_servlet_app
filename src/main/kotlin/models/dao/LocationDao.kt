@@ -8,7 +8,7 @@ import models.entities.Location
 class LocationDao(
     private val entityManager: EntityManager = PersistenceUtil.entityManagerFactory.createEntityManager()
 ) {
-    fun getAllLocationsByUserId(userId: Int): Result<List<Location>> {
+    fun getAllLocationsByUserId(userId: Long): Result<List<Location>> {
         val query: TypedQuery<Location> = entityManager
             .createQuery("SELECT l FROM Locations l WHERE l.userId = :userId", Location::class.java)
             .setParameter("userId", userId)

@@ -13,6 +13,6 @@ class User(
     @Column(name = "login", unique = true)
     val login: String,
 
-    @Column(name = "login")
+    @Column(name = "password")
     val password: String
 )
