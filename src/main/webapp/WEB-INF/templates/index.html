@@ -26,13 +26,13 @@
                         <button class="btn btn-outline-success" type="submit">Search</button>
                     </form>
                     <div>
-                        <div th:if="${user eq null}" class="col d-flex justify-content-end">
+                        <div th:if="${login eq null}" class="col d-flex justify-content-end">
                             <a class="btn btn-outline-primary px-3" href="/sign-in">Sign in</a>
                             <a class="btn btn-primary px-3 ms-2" href="/sign-up">Sign up</a>
                         </div>
-                        <div th:unless="${user eq null}" class="col d-flex justify-content-end">
+                        <div th:unless="${login eq null}" class="col d-flex justify-content-end">
                             <span class="d-inline-block text-center px-3 align-middle my-auto"
-                                th:text="${user.name}">Login</span>
+                                th:text="${login}">Login</span>
                             <button class="btn btn-primary px-3 ms-2" href="sign-up">Logout</button>
                         </div>
                     </div>
@@ -41,7 +41,6 @@
         </header>
         <div>
             <h1>Weather Forecast Servlet Application!</h1>
-
             <div class="row row-cols-3 g-3" th:each="weather : ${weathers}">
                 <div class="col">
                     <div class="card h-100">
