@@ -4,6 +4,7 @@ import api.dto.WeatherData
 import exception.BadSessionException
 import exception.CookieNotFoundException
 import exception.SessionNotFoundException
+import exception.UserExistsException
 import jakarta.servlet.ServletConfig
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServlet
@@ -17,6 +18,11 @@ import org.thymeleaf.templatemode.TemplateMode
 import org.thymeleaf.templateresolver.WebApplicationTemplateResolver
 import org.thymeleaf.web.IWebApplication
 import org.thymeleaf.web.servlet.JakartaServletWebApplication
+import utils.Constants.ERROR
+import utils.Constants.INDEX
+import utils.Constants.LOGIN
+import utils.Constants.SIGN_UP
+import utils.Constants.WEATHERS
 import java.time.LocalDateTime
 
 abstract class BaseServlet : HttpServlet() {
@@ -36,20 +42,22 @@ abstract class BaseServlet : HttpServlet() {
 
         try {
             super.service(req, resp)
-        } catch (e: CookieNotFoundException){
-            context.setVariable("weathers", emptyList<WeatherData>())
-            context.setVariable("login", null)
-            templateEngine.process("index", context, resp.writer)
-        } catch (e: SessionNotFoundException){
-            context.setVariable("weathers", emptyList<WeatherData>())
-            context.setVariable("login", null)
-            templateEngine.process("index", context, resp.writer)
+        } catch (e: CookieNotFoundException) {
+            context.setVariable(WEATHERS, emptyList<WeatherData>())
+            context.setVariable(LOGIN, null)
+            templateEngine.process(INDEX, context, resp.writer)
+        } catch (e: SessionNotFoundException) {
+            context.setVariable(WEATHERS, emptyList<WeatherData>())
+            context.setVariable(LOGIN, null)
+            templateEngine.process(INDEX, context, resp.writer)
         } catch (e: BadSessionException) {
-            context.setVariable("weathers", emptyList<WeatherData>())
-            context.setVariable("login", null)
-            templateEngine.process("index", context, resp.writer)
+            context.setVariable(WEATHERS, emptyList<WeatherData>())
+            context.setVariable(LOGIN, null)
+            templateEngine.process(INDEX, context, resp.writer)
+        } catch (e: UserExistsException) {
+            context.setVariable(ERROR, "User exists")
+            templateEngine.process(SIGN_UP, context, resp.writer)
         }
-
     }
 
     private fun buildTemplateEngine(application: IWebApplication): ITemplateEngine {

@@ -14,19 +14,21 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 import models.dao.LocationDao
 import models.dao.SessionDao
-import models.dao.UserDao
+import utils.Constants.INDEX
+import utils.Constants.LOGIN
+import utils.Constants.SESSION_ID
+import utils.Constants.WEATHERS
 import java.util.*
 
 @WebServlet(name = "HomeServlet", urlPatterns = [""])
 class HomeServlet(
-    private val userDao: UserDao = UserDao(),
     private val locationDao: LocationDao = LocationDao(),
     private val sessionDao: SessionDao = SessionDao(),
     private val weatherRepository: WeatherRepository = WeatherRepositoryImpl(),
 ) : BaseServlet() {
 
     override fun doGet(request: HttpServletRequest, response: HttpServletResponse) {
-        val cookie = findCookieBySessionId(request.cookies.toList(), "sessionId").getOrThrow()
+        val cookie = findCookieBySessionId(request.cookies.toList(), SESSION_ID).getOrThrow()
         val uuid = UUID.fromString(cookie.value)
         val session = sessionDao.findSessionById(uuid).getOrElse { throw SessionNotFoundException(uuid.toString()) }
 
@@ -47,9 +49,9 @@ class HomeServlet(
             }.awaitAll()
         }
 
-        context.setVariable("weathers", weatherList)
-        context.setVariable("login", user.login)
+        context.setVariable(WEATHERS, weatherList)
+        context.setVariable(LOGIN, user.login)
 
-        templateEngine.process("index", context, response.writer)
+        templateEngine.process(INDEX, context, response.writer)
     }
 }
