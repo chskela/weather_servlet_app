@@ -9,10 +9,12 @@ class LocationDao(
     private val entityManager: EntityManager = PersistenceUtil.entityManagerFactory.createEntityManager()
 ) {
     fun getAllLocationsByUserId(userId: Long): Result<List<Location>> {
-        val query: TypedQuery<Location> = entityManager
-            .createQuery("SELECT l FROM Locations l WHERE l.userId = :userId", Location::class.java)
-            .setParameter("userId", userId)
-        return runCatching { query.resultList }
+        return runCatching {
+            val query: TypedQuery<Location> = entityManager
+                .createQuery("SELECT l FROM Locations l WHERE l.userId = :userId", Location::class.java)
+                .setParameter("userId", userId)
+            query.resultList
+        }
     }
 
     fun insert(location: Location): Result<Location> {
