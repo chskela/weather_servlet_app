@@ -13,8 +13,8 @@ class Session(
 
     @ManyToOne
     @JoinColumn(name = "user_id", foreignKey = ForeignKey(name = "fk_locations_users"))
-    val user: User,
+    val user: User = User(),
 
     @Column(name = "ExpiresAt")
-    val expiresAt: LocalDateTime,
+    val expiresAt: LocalDateTime = LocalDateTime.now(),
 )

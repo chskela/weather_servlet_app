@@ -10,17 +10,17 @@ class Location(
     val id: Long? = null,
 
     @Column(name = "name")
-    val name: String,
+    val name: String = "",
 
     @ManyToOne
     @JoinColumn(name = "user_id", foreignKey = ForeignKey(name = "fk_locations_users"))
-    val user: User,
+    val user: User = User(),
 
     @Column(name = "latitude")
-    val latitude: Double,
+    val latitude: Double = 0.0,
 
     @Column(name = "longitude")
-    val longitude: Double,
+    val longitude: Double = 0.0,
 )
 
 

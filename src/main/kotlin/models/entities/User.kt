@@ -10,9 +10,9 @@ class User(
     @Column(name = "id")
     val id: Long? = null,
 
-    @Column(name = "login", unique = true)
-    val login: String,
+    @Column(name = "login", unique = true, nullable = false)
+    val login: String = "",
 
-    @Column(name = "password")
-    val password: String
+    @Column(name = "password", nullable = false)
+    val password: String = ""
 )
