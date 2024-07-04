@@ -1,5 +1,6 @@
 package models.dao
 
+import exception.SessionNotFoundException
 import jakarta.persistence.EntityManager
 import models.database.PersistenceUtil
 import models.entities.Session
