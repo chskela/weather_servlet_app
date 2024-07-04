@@ -1,6 +1,8 @@
 package models.entities
 
 import jakarta.persistence.*
+import org.hibernate.annotations.OnDelete
+import org.hibernate.annotations.OnDeleteAction
 
 @Entity
 @Table(name = "locations")
@@ -12,7 +14,8 @@ class Location(
     @Column(name = "name")
     val name: String = "",
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id", foreignKey = ForeignKey(name = "fk_locations_users"))
     val user: User = User(),
 
