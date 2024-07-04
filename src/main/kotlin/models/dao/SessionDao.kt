@@ -34,4 +34,17 @@ class SessionDao(
         }.onSuccess { txn.commit() }
             .onFailure { txn.rollback() }
     }
+
+    fun removeSessionById(uuid: UUID): Result<Int> {
+        val txn = entityManager.transaction
+
+        return runCatching {
+            txn.begin()
+            entityManager
+                .createQuery("DELETE FROM Session WHERE id = :id")
+                .setParameter("id", uuid)
+                .executeUpdate()
+        }.onSuccess { txn.commit() }
+            .onFailure { txn.rollback() }
+    }
 }
