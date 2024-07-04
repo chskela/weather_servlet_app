@@ -4,7 +4,6 @@ import api.WeatherRepository
 import api.dto.WeatherData
 import api.repository.WeatherRepositoryImpl
 import exception.BadSessionException
-import exception.SessionNotFoundException
 import jakarta.servlet.annotation.WebServlet
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -28,7 +27,7 @@ class HomeServlet(
 ) : BaseServlet() {
 
     override fun doGet(request: HttpServletRequest, response: HttpServletResponse) {
-        val cookie = findCookieBySessionId(request.cookies.toList(), SESSION_ID).getOrThrow()
+        val cookie = findCookieBySessionId(request.cookies?.toList() ?: emptyList(), SESSION_ID).getOrThrow()
         val uuid = UUID.fromString(cookie.value)
         val session = sessionDao.findSessionById(uuid).getOrElse { throw SessionNotFoundException(uuid.toString()) }
 
