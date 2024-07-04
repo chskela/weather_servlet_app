@@ -29,7 +29,7 @@ class HomeServlet(
     override fun doGet(request: HttpServletRequest, response: HttpServletResponse) {
         val cookie = findCookieBySessionId(request.cookies?.toList() ?: emptyList(), SESSION_ID).getOrThrow()
         val uuid = UUID.fromString(cookie.value)
-        val session = sessionDao.findSessionById(uuid).getOrElse { throw SessionNotFoundException(uuid.toString()) }
+        val session = sessionDao.findSessionById(uuid).getOrThrow()
 
         if (isBadSession(session)) {
             throw BadSessionException(session.toString())
