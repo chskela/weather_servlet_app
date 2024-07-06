@@ -42,21 +42,26 @@ abstract class BaseServlet : HttpServlet() {
 
         try {
             super.service(req, resp)
-        } catch (e: CookieNotFoundException) {
-            context.setVariable(WEATHERS, emptyList<WeatherData>())
-            context.setVariable(LOGIN, null)
-            templateEngine.process(INDEX, context, resp.writer)
-        } catch (e: SessionNotFoundException) {
-            context.setVariable(WEATHERS, emptyList<WeatherData>())
-            context.setVariable(LOGIN, null)
-            templateEngine.process(INDEX, context, resp.writer)
-        } catch (e: BadSessionException) {
-            context.setVariable(WEATHERS, emptyList<WeatherData>())
-            context.setVariable(LOGIN, null)
-            templateEngine.process(INDEX, context, resp.writer)
-        } catch (e: UserExistsException) {
-            context.setVariable(ERROR, "User exists")
-            templateEngine.process(SIGN_UP, context, resp.writer)
+        } catch (e: RuntimeException) {
+            when (e) {
+                is BadSessionException,
+                is CookieNotFoundException,
+                is SessionNotFoundException -> {
+                    context.setVariable(WEATHERS, emptyList<WeatherData>())
+                    context.setVariable(LOGIN, null)
+                    templateEngine.process(INDEX, context, resp.writer)
+                }
+
+                is UserExistsException -> {
+                    context.setVariable(ERROR, e.message)
+                    templateEngine.process(SIGN_UP, context, resp.writer)
+                }
+
+                else -> {
+                    println("BaseServlet: $e")
+                    // TODO: handle exception view error page
+                }
+            }
         }
     }
 
