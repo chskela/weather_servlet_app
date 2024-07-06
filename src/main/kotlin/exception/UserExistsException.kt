@@ -1,5 +1,3 @@
 package exception
 
-import jakarta.servlet.ServletException
-
-class UserExistsException(message: String) : ServletException("User exits: $message")
+class UserExistsException(message: String) : RuntimeException("User exits: $message")

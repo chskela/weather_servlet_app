@@ -1,5 +1,3 @@
 package exception
 
-import jakarta.servlet.ServletException
-
-class SessionNotFoundException(message: String) : ServletException("Session not found: $message")
+class SessionNotFoundException(message: String) : RuntimeException("Session not found: $message")
