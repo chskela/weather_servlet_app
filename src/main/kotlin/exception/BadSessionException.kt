@@ -1,5 +1,3 @@
 package exception
 
-import jakarta.servlet.ServletException
-
-class BadSessionException(message: String) : ServletException("Bad session: $message")
+class BadSessionException(message: String) : RuntimeException("Bad session: $message")
