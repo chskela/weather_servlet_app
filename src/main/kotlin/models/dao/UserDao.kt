@@ -1,7 +1,10 @@
 package models.dao
 
 import exception.UserExistsException
+import exception.UserNotExistsException
 import jakarta.persistence.EntityManager
+import jakarta.persistence.NoResultException
+import jakarta.persistence.TypedQuery
 import models.database.PersistenceUtil
 import models.entities.User
 import org.hibernate.exception.ConstraintViolationException
@@ -11,6 +14,19 @@ class UserDao(
 ) {
     fun findUserById(userId: Int): Result<User> {
         return runCatching { entityManager.find(User::class.java, userId) }
+    }
+
+    fun findUserByLogin(login: String): Result<User> {
+        return try {
+            val query: TypedQuery<User> = entityManager
+                .createQuery("SELECT u FROM User u WHERE u.login = :login", User::class.java)
+                .setParameter("login", login)
+            Result.success(query.singleResult)
+        } catch (e: Exception) {
+            if (e is NoResultException) {
+                Result.failure(UserNotExistsException(login))
+            } else Result.failure(RuntimeException(e))
+        }
     }
 
     fun insert(user: User): Result<User> {
