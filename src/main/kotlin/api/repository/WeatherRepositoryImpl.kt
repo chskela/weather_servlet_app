@@ -11,10 +11,11 @@ import java.net.http.HttpResponse
 
 class WeatherRepositoryImpl(private val apiKey: String = Config.weatherApiKey) : WeatherRepository {
     private val baseUri = "https://api.openweathermap.org/data/2.5/weather"
+    private val appid = "appid=$apiKey"
 
     override fun getWeatherByCity(city: String): WeatherData {
         val request: HttpRequest = HttpRequest.newBuilder()
-            .uri(URI("$baseUri?q=$city&appid=$apiKey"))
+            .uri(URI("$baseUri?q=$city&$appid"))
             .GET()
             .build()
         val response = HttpClient.newHttpClient()
@@ -25,7 +26,7 @@ class WeatherRepositoryImpl(private val apiKey: String = Config.weatherApiKey) :
 
     override fun getWeatherByCoordinates(latitude: Double, longitude: Double): WeatherData {
         val request: HttpRequest = HttpRequest.newBuilder()
-            .uri(URI("$baseUri?lat=$latitude&lon=$longitude&appid=$apiKey"))
+            .uri(URI("$baseUri?lat=$latitude&lon=$longitude&$appid"))
             .GET()
             .build()
         val response = HttpClient.newHttpClient()
