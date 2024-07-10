@@ -59,7 +59,7 @@ abstract class BaseServlet : HttpServlet() {
 
                 else -> {
                     println("BaseServlet: $e")
-                    // TODO: handle exception view error page
+                    templateEngine.process(ERROR, context, resp.writer)
                 }
             }
         }
