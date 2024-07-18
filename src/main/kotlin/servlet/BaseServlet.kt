@@ -1,6 +1,6 @@
 package servlet
 
-import api.dto.WeatherData
+import api.dto.response.WeatherResponse
 import exception.BadSessionException
 import exception.CookieNotFoundException
 import exception.SessionNotFoundException
@@ -47,7 +47,7 @@ abstract class BaseServlet : HttpServlet() {
                 is BadSessionException,
                 is CookieNotFoundException,
                 is SessionNotFoundException -> {
-                    context.setVariable(WEATHERS, emptyList<WeatherData>())
+                    context.setVariable(WEATHERS, emptyList<WeatherResponse>())
                     context.setVariable(LOGIN, null)
                     templateEngine.process(INDEX, context, resp.writer)
                 }

@@ -1,7 +1,7 @@
 package servlet
 
 import api.WeatherRepository
-import api.dto.WeatherData
+import api.dto.response.WeatherResponse
 import api.repository.WeatherRepositoryImpl
 import exception.BadSessionException
 import jakarta.servlet.annotation.WebServlet
@@ -36,7 +36,7 @@ class HomeServlet(
         }
         val user = session.user
 
-        val weatherList: List<WeatherData> = locationDao.getAllLocationsByUserId(user.id ?: 0)
+        val weatherList: List<WeatherResponse> = locationDao.getAllLocationsByUserId(user.id ?: 0)
             .map { locations ->
                 runBlocking(Dispatchers.IO) {
                     locations.map { location ->
