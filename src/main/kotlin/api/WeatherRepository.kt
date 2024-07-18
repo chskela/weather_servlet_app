@@ -1,10 +1,11 @@
 package api
 
-import api.dto.WeatherData
+import api.dto.request.Geocoding
+import api.dto.response.WeatherResponse
 
 interface WeatherRepository {
 
-    fun getWeatherByCity(city: String): WeatherData
+    fun getLocationListByName(name: String): List<Geocoding>
 
-    fun getWeatherByCoordinates(latitude: Double, longitude: Double): WeatherData
+    fun getWeatherByCoordinates(latitude: Double, longitude: Double): WeatherResponse
 }
