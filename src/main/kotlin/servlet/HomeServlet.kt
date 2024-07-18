@@ -36,17 +36,16 @@ class HomeServlet(
         }
         val user = session.user
 
-        val locations = locationDao.getAllLocationsByUserId(user.id ?: 0).getOrElse {
-            emptyList()
-        }
-
-        val weatherList: List<WeatherData> = runBlocking(Dispatchers.IO) {
-            locations.map { location ->
-                async {
-                    weatherRepository.getWeatherByCoordinates(location.latitude, location.longitude)
+        val weatherList: List<WeatherData> = locationDao.getAllLocationsByUserId(user.id ?: 0)
+            .map { locations ->
+                runBlocking(Dispatchers.IO) {
+                    locations.map { location ->
+                        async {
+                            weatherRepository.getWeatherByCoordinates(location.latitude, location.longitude)
+                        }
+                    }.awaitAll()
                 }
-            }.awaitAll()
-        }
+            }.getOrThrow()
 
         context.setVariable(WEATHERS, weatherList)
         context.setVariable(LOGIN, user.login)
