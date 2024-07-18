@@ -11,7 +11,7 @@ class LocationDao(
     fun getAllLocationsByUserId(userId: Long): Result<List<Location>> {
         return runCatching {
             val query: TypedQuery<Location> = entityManager
-                .createQuery("SELECT l FROM Locations l WHERE l.userId = :userId", Location::class.java)
+                .createQuery("SELECT l FROM Location l WHERE l.id = :userId", Location::class.java)
                 .setParameter("userId", userId)
             query.resultList
         }
