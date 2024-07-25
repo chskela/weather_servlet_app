@@ -18,14 +18,22 @@
         <div class="row row-cols-3 g-3" th:each="weather : ${weathers}">
             <div class="col">
                 <div class="card h-100">
-                    <img alt="..." class="card-img-top" src="...">
+                    <div class="col-md-3 text-start align-self-center">
+                        <img alt="weather" class="card-img-top" src="" th:src="'https:' + ${weather.icon}">
+                    </div>
                     <div class="card-body">
                         <h5 class="card-title" th:text="${weather.name}">Moscow</h5>
-                        <p class="card-text" th:text="${weather.main.temp}">35 C</p>
+                        <p class="card-text" th:text="${weather.country}"></p>
+                        <p class="card-text" th:text="'temp: ' + ${weather.temperature} + ' ℃'">35 C</p>
                     </div>
-                    <div class="card-footer">
-                        <button class="btn btn-danger" type="button">Remove</button>
-                    </div>
+                    <form action="/" class="card-footer" method="post">
+                        <input class="form-control" hidden id="name" name="name" th:value="${weather.name}" type="text">
+                        <input class="form-control" hidden id="lat" name="lat" th:value="${weather.latitude}"
+                               type="text">
+                        <input class="form-control" hidden id="lon" name="lon" th:value="${weather.longitude}"
+                               type="text">
+                        <button class="btn btn-danger" type="submit">Remove</button>
+                    </form>
                 </div>
             </div>
         </div>

@@ -17,6 +17,8 @@ import utils.Constants.INDEX
 import utils.Constants.LOGIN
 import utils.Constants.SESSION_ID
 import utils.Constants.WEATHERS
+import utils.toWeatherDTO
+import views.dto.WeatherDTO
 import java.util.*
 
 @WebServlet(name = "HomeServlet", urlPatterns = [""])
@@ -36,7 +38,7 @@ class HomeServlet(
         }
         val user = session.user
 
-        val weatherList: List<WeatherResponse> = locationDao.getAllLocationsByUserId(user.id ?: 0)
+        val weatherList: List<WeatherDTO> = locationDao.getAllLocationsByUserId(user)
             .map { locations ->
                 runBlocking(Dispatchers.IO) {
                     locations.map { location ->
@@ -44,6 +46,7 @@ class HomeServlet(
                             weatherRepository.getWeatherByCoordinates(location.latitude, location.longitude)
                         }
                     }.awaitAll()
+                        .map { weatherResponse -> weatherResponse.toWeatherDTO() }
                 }
             }.getOrThrow()
 
