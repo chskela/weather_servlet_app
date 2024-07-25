@@ -1,4 +1,4 @@
-package servlet
+package controllers
 
 import exception.UserNotExistsException
 import jakarta.servlet.annotation.WebServlet

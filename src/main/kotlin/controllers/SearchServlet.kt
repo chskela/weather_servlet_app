@@ -1,4 +1,4 @@
-package servlet
+package controllers
 
 import api.WeatherRepository
 import api.dto.request.Geocoding
