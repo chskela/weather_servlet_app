@@ -1,4 +1,4 @@
-package servlet
+package controllers
 
 import jakarta.servlet.annotation.WebServlet
 import jakarta.servlet.http.Cookie

@@ -1,4 +1,4 @@
-package servlet
+package controllers
 
 import api.dto.response.WeatherResponse
 import exception.BadSessionException
