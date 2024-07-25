@@ -1,7 +1,6 @@
 package controllers
 
 import api.WeatherRepository
-import api.dto.response.WeatherResponse
 import api.repository.WeatherRepositoryImpl
 import exception.BadSessionException
 import jakarta.servlet.annotation.WebServlet
@@ -13,6 +12,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 import models.dao.LocationDao
 import models.dao.SessionDao
+import models.entities.Location
 import utils.Constants.INDEX
 import utils.Constants.LOGIN
 import utils.Constants.SESSION_ID
@@ -54,5 +54,32 @@ class HomeServlet(
         context.setVariable(LOGIN, user.login)
 
         templateEngine.process(INDEX, context, response.writer)
+    }
+
+    override fun doPost(request: HttpServletRequest, response: HttpServletResponse) {
+        val cookie = findCookieBySessionId(request.cookies?.toList() ?: emptyList(), SESSION_ID).getOrThrow()
+        val uuid = UUID.fromString(cookie.value)
+        val session = sessionDao.findSessionById(uuid).getOrThrow()
+
+        if (isBadSession(session)) {
+            throw BadSessionException(session.toString())
+        }
+
+        val user = session.user
+
+        val name = request.getParameter("name")
+        val latitude = request.getParameter("lat").toDouble()
+        val longitude = request.getParameter("lon").toDouble()
+
+        locationDao.insert(
+            Location(
+                name = name,
+                user = user,
+                latitude = latitude,
+                longitude = longitude
+            )
+        ).getOrThrow()
+
+        response.sendRedirect("/")
     }
 }
