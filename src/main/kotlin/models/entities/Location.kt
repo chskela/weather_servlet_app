@@ -5,7 +5,16 @@ import org.hibernate.annotations.OnDelete
 import org.hibernate.annotations.OnDeleteAction
 
 @Entity
-@Table(name = "locations")
+@Table(
+    name = "locations",
+    uniqueConstraints = [UniqueConstraint(
+        name = "location_unique",
+        columnNames = [
+            "latitude",
+            "longitude"
+        ]
+    )]
+)
 class Location(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
