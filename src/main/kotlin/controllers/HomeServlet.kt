@@ -78,7 +78,7 @@ class HomeServlet(
                 latitude = latitude,
                 longitude = longitude
             )
-        ).getOrThrow()
+        )
 
         response.sendRedirect("/")
     }
