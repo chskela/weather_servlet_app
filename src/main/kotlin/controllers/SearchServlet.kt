@@ -31,9 +31,9 @@ class SearchServlet(
 
         val user = session.user
 
-        val searchRequest = request.getParameter("searchRequest")
+        val searchRequest = request.getParameter("searchRequest").trim().replace(" ", "+")
 
-        if (searchRequest.isNullOrBlank()) {
+        if (searchRequest.isBlank()) {
             response.sendRedirect("/")
         } else {
             val locationsList: List<Geocoding> = weatherRepository.getLocationListByName(searchRequest)
