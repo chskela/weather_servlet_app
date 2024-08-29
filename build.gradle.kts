@@ -1,6 +1,6 @@
 plugins {
-    kotlin("jvm") version "2.0.0"
-    kotlin("plugin.serialization") version "2.0.0"
+    kotlin("jvm") version "2.0.20"
+    kotlin("plugin.serialization") version "2.0.20"
 
     war
 }
@@ -31,6 +31,10 @@ dependencies {
     implementation(libs.coroutines)
 
     testImplementation(kotlin("test"))
+    // https://mvnrepository.com/artifact/com.h2database/h2
+    testImplementation(libs.h2)
+    // https://mvnrepository.com/artifact/org.mockito.kotlin/mockito-kotlin
+    testImplementation(libs.mockito)
 }
 
 tasks.test {
