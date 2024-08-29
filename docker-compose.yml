@@ -6,7 +6,7 @@ services:
       JAKARTA_PERSISTENCE_JDBC_USER: postgres
       JAKARTA_PERSISTENCE_JDBC_PASSWORD: postgres
       HIBERNATE_DDL_AUTO: update
-      WEATHER_API_KEY: 4ec3bbbfc854473ef842e3e0b5ec5c91
+      WEATHER_API_KEY: ${WEATHER_API_KEY}
     ports:
       - "8080:8080"
     depends_on:
