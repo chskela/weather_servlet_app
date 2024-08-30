@@ -7,7 +7,7 @@ import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import services.AuthorizationService
-import services.dto.SignInDTO
+import services.dto.AuthorizationDTO
 import utils.Constants.EMAIL
 import utils.Constants.EMAIL_CANNOT_BE_BLANK
 import utils.Constants.ERROR
@@ -29,37 +29,42 @@ class SignInServlet(private val authorizationService: AuthorizationService = Aut
         val email = request.getParameter(EMAIL)
         val password = request.getParameter(PASSWORD)
 
-        if (email.isNullOrBlank()) {
-            context.setVariable(ERROR, EMAIL_CANNOT_BE_BLANK)
-            templateEngine.process(SIGN_IN, context, response.writer)
-        } else if (password.isNullOrBlank()) {
-            context.setVariable(ERROR, PASSWORD_CANNOT_BE_BLANK)
-            context.setVariable(EMAIL, email)
-            templateEngine.process(SIGN_IN, context, response.writer)
-        } else {
+        when {
+            email.isNullOrBlank() -> {
+                context.setVariable(ERROR, EMAIL_CANNOT_BE_BLANK)
+                templateEngine.process(SIGN_IN, context, response.writer)
+            }
 
-            authorizationService.signIn(SignInDTO(email, password))
-                .onFailure { e ->
-                    when (e) {
-                        is UserNotExistsException -> {
-                            context.setVariable(ERROR, USER_DOES_NOT_EXIST)
-                            context.setVariable(EMAIL, email)
-                            templateEngine.process(SIGN_IN, context, response.writer)
+            password.isNullOrBlank() -> {
+                context.setVariable(ERROR, PASSWORD_CANNOT_BE_BLANK)
+                context.setVariable(EMAIL, email)
+                templateEngine.process(SIGN_IN, context, response.writer)
+            }
+
+            else -> {
+                authorizationService.signIn(AuthorizationDTO(email, password))
+                    .onFailure { e ->
+                        when (e) {
+                            is UserNotExistsException -> {
+                                context.setVariable(ERROR, USER_DOES_NOT_EXIST)
+                                context.setVariable(EMAIL, email)
+                                templateEngine.process(SIGN_IN, context, response.writer)
+                            }
+
+                            is PasswordWrongException -> {
+                                context.setVariable(ERROR, PASSWORD_DOES_NOT_MATCH)
+                                context.setVariable(EMAIL, email)
+                                templateEngine.process(SIGN_IN, context, response.writer)
+                            }
+
+                            else -> throw e
                         }
-
-                        is PasswordWrongException -> {
-                            context.setVariable(ERROR, PASSWORD_DOES_NOT_MATCH)
-                            context.setVariable(EMAIL, email)
-                            templateEngine.process(SIGN_IN, context, response.writer)
-                        }
-
-                        else -> throw e
                     }
-                }
-                .onSuccess { session ->
-                    response.addCookie(Cookie(SESSION_ID, session.id.toString()))
-                    response.sendRedirect(request.contextPath + "/")
-                }
+                    .onSuccess { session ->
+                        response.addCookie(Cookie(SESSION_ID, session.id.toString()))
+                        response.sendRedirect(request.contextPath + "/")
+                    }
+            }
         }
     }
 }
