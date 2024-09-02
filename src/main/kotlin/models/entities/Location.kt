@@ -8,10 +8,11 @@ import org.hibernate.annotations.OnDeleteAction
 @Table(
     name = "locations",
     uniqueConstraints = [UniqueConstraint(
-        name = "location_unique",
+        name = "location_unique_for_user",
         columnNames = [
             "latitude",
-            "longitude"
+            "longitude",
+            "user"
         ]
     )]
 )
