@@ -35,6 +35,13 @@ dependencies {
     testImplementation(libs.h2)
     // https://mvnrepository.com/artifact/org.mockito.kotlin/mockito-kotlin
     testImplementation(libs.mockito)
+
+    // https://mvnrepository.com/artifact/org.testcontainers/testcontainers
+    testImplementation(libs.testcontainers)
+    // https://mvnrepository.com/artifact/org.testcontainers/postgresql
+    testImplementation(libs.testcontainers.postgresql)
+    // https://mvnrepository.com/artifact/org.testcontainers/junit-jupiter
+    testImplementation(libs.testcontainers.junit)
 }
 
 tasks.test {

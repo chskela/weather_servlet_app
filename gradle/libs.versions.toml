@@ -9,6 +9,7 @@ serialization_version = "1.7.2"
 coroutines_version = "1.9.0-RC"
 h2_version = "2.3.232"
 mockito_version = "5.4.0"
+testcontainers_version = "1.20.1"
 
 [libraries]
 jakarta-servlet-api = { module = "jakarta.servlet:jakarta.servlet-api", version.ref = "jakarta_servlet_api_version" }
@@ -21,4 +22,7 @@ serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", v
 coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines_version" }
 h2 = { module = "com.h2database:h2", version.ref = "h2_version" }
 mockito = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito_version" }
+testcontainers = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers_version" }
+testcontainers-postgresql = { module = "org.testcontainers:postgresql", version.ref = "testcontainers_version" }
+testcontainers-junit = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainers_version" }
 

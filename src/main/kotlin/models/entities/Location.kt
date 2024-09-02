@@ -12,7 +12,7 @@ import org.hibernate.annotations.OnDeleteAction
         columnNames = [
             "latitude",
             "longitude",
-            "user"
+            "user_id"
         ]
     )]
 )
