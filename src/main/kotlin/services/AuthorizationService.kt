@@ -8,6 +8,7 @@ import services.dto.AuthorizationDTO
 import services.dto.toUser
 import utils.md5
 import java.time.LocalDateTime
+import java.util.*
 
 class AuthorizationService(
     private val userDao: UserDao = UserDao(),
@@ -33,5 +34,9 @@ class AuthorizationService(
                     .insert(Session(user = user, expiresAt = LocalDateTime.now().withHour(1)))
                     .getOrThrow()
             }
+    }
+
+    fun logout(uuid: UUID) {
+        sessionDao.removeSessionById(uuid)
     }
 }
