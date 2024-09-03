@@ -17,6 +17,7 @@ import utils.Constants.PASSWORD_DOES_NOT_MATCH
 import utils.Constants.SESSION_ID
 import utils.Constants.SIGN_IN
 import utils.Constants.USER_DOES_NOT_EXIST
+import utils.md5
 
 @WebServlet(name = "SignInServlet", urlPatterns = ["/sign-in"])
 class SignInServlet(private val authorizationService: AuthorizationService = AuthorizationService()) : BaseServlet() {
@@ -42,7 +43,7 @@ class SignInServlet(private val authorizationService: AuthorizationService = Aut
             }
 
             else -> {
-                authorizationService.signIn(AuthorizationDTO(email, password))
+                authorizationService.signIn(AuthorizationDTO(email, password.md5()))
                     .onFailure { e ->
                         when (e) {
                             is UserNotExistsException -> {

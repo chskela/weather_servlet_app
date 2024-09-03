@@ -9,7 +9,7 @@ import utils.Constants.SESSION_ID
 import java.util.*
 
 @WebServlet(name = "LogoutServlet", urlPatterns = ["/logout"])
-class LogoutServlet(    private val authorizationService: AuthorizationService = AuthorizationService()) : BaseServlet() {
+class LogoutServlet(private val authorizationService: AuthorizationService = AuthorizationService()) : BaseServlet() {
 
     override fun doGet(request: HttpServletRequest, response: HttpServletResponse) {
         val cookie = findCookieBySessionId(request.cookies.toList(), SESSION_ID).getOrThrow()

@@ -12,6 +12,7 @@ import utils.Constants.PASSWORD
 import utils.Constants.PASSWORD_CONFIRMATION
 import utils.Constants.SESSION_ID
 import utils.Constants.SIGN_UP
+import utils.md5
 
 @WebServlet(name = "SignUpServlet", urlPatterns = ["/sign-up"])
 class SignUpServlet(private val authorizationService: AuthorizationService = AuthorizationService()) : BaseServlet() {
@@ -43,7 +44,7 @@ class SignUpServlet(private val authorizationService: AuthorizationService = Aut
             }
 
             else -> {
-                authorizationService.signUp(AuthorizationDTO(email, password))
+                authorizationService.signUp(AuthorizationDTO(email, password.md5()))
                     .onSuccess { session ->
                         response.addCookie(Cookie(SESSION_ID, session.id.toString()))
                         response.sendRedirect(request.contextPath + "/")

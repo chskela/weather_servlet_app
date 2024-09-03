@@ -6,7 +6,6 @@ import models.dao.UserDao
 import models.entities.Session
 import services.dto.AuthorizationDTO
 import services.dto.toUser
-import utils.md5
 import java.time.LocalDateTime
 import java.util.*
 
@@ -19,7 +18,7 @@ class AuthorizationService(
             return Result.failure(e)
         }
 
-        if (authorizationDto.password.md5() != user.password) {
+        if (authorizationDto.password != user.password) {
             return Result.failure(PasswordWrongException())
         }
         return sessionDao
