@@ -10,8 +10,6 @@ class SessionDao(
     private val entityManager: EntityManager = PersistenceUtil.entityManagerFactory.createEntityManager()
 ) {
     fun findSessionById(uuid: UUID): Result<Session> {
-        val txn = entityManager.transaction
-
         return try {
             val session = entityManager.find(Session::class.java, uuid)
 
@@ -20,7 +18,6 @@ class SessionDao(
             } else Result.failure(SessionNotFoundException("Session not found"))
 
         } catch (e: Exception) {
-            txn.rollback()
             Result.failure(SessionNotFoundException("Session not found"))
         }
     }
@@ -44,7 +41,10 @@ class SessionDao(
                 .createQuery("DELETE FROM Session WHERE id = :id")
                 .setParameter("id", uuid)
                 .executeUpdate()
-        }.onSuccess { txn.commit() }
+        }.onSuccess {
+            txn.commit()
+            entityManager.clear()
+        }
             .onFailure { txn.rollback() }
     }
 }

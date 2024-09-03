@@ -14,6 +14,7 @@ import kotlin.test.assertTrue
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 object TestContainerConfig {
     val config: MutableMap<String, String> = HashMap()
+
     @Container
     val postgres: PostgreSQLContainer<*> = PostgreSQLContainer("postgres")
 
@@ -28,7 +29,7 @@ object TestContainerConfig {
         config["jakarta.persistence.jdbc.url"] = jdbcUrl
         config["jakarta.persistence.jdbc.user"] = jdbcUser
         config["jakarta.persistence.jdbc.password"] = jdbcPassword
-        config["hibernate.hbm2ddl.auto"] = "create"
+        config["hibernate.hbm2ddl.auto"] = "create-drop"
     }
 
     @Test
