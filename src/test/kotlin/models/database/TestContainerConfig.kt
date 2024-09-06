@@ -4,20 +4,17 @@ import jakarta.persistence.EntityManagerFactory
 import jakarta.persistence.Persistence
 import jakarta.persistence.PersistenceUnit
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import kotlin.test.assertTrue
 
 @Testcontainers
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 object TestContainerConfig {
-    val config: MutableMap<String, String> = HashMap()
+    private val config: MutableMap<String, String> = HashMap()
 
     @Container
     val postgres: PostgreSQLContainer<*> = PostgreSQLContainer("postgres")
-
 
     init {
         postgres.start()
@@ -34,7 +31,6 @@ object TestContainerConfig {
 
     @Test
     fun test_running() {
-        println(postgres.jdbcUrl)
         assertTrue(postgres.isRunning)
     }
 

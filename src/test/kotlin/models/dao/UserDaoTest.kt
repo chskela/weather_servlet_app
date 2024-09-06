@@ -5,6 +5,7 @@ import exception.UserNotExistsException
 import jakarta.persistence.EntityManager
 import models.database.TestContainerConfig
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -38,6 +39,8 @@ class UserDaoTest {
         val addedUser = userDao.insert(candidate.toUser()).getOrThrow()
 
         //then
+        assertNotNull(addedUser.id)
+        assertNotNull(addedUser.login)
         assertEquals(candidate.email, addedUser.login)
     }
 

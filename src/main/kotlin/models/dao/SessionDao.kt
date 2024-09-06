@@ -18,7 +18,7 @@ class SessionDao(
             } else Result.failure(SessionNotFoundException("Session not found"))
 
         } catch (e: Exception) {
-            Result.failure(SessionNotFoundException("Session not found"))
+            Result.failure(e)
         }
     }
 
