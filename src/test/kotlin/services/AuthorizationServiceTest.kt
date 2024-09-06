@@ -20,18 +20,14 @@ import java.time.LocalDateTime
 
 class AuthorizationServiceTest {
     private val entityManager: EntityManager = TestContainerConfig.entityManagerFactory.createEntityManager()
-    private lateinit var authorizationService: AuthorizationService
-    private lateinit var userDao: UserDao
-    private lateinit var sessionDao: SessionDao
+    private val userDao = UserDao(entityManager)
+    private val sessionDao = SessionDao(entityManager)
+    private val authorizationService = AuthorizationService(userDao, sessionDao)
 
     private val candidate: AuthorizationDTO = AuthorizationDTO("test@gmail.com", "password")
 
     @BeforeEach
     fun setup() {
-        userDao = UserDao(entityManager)
-        sessionDao = SessionDao(entityManager)
-        authorizationService = AuthorizationService(userDao, sessionDao)
-
         val txn = entityManager.transaction
         try {
             txn.begin()

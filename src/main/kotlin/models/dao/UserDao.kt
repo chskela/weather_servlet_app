@@ -12,10 +12,6 @@ import org.hibernate.exception.ConstraintViolationException
 class UserDao(
     private val entityManager: EntityManager = PersistenceUtil.entityManagerFactory.createEntityManager()
 ) {
-    fun findUserById(userId: Int): Result<User> {
-        return runCatching { entityManager.find(User::class.java, userId) }
-    }
-
     fun findUserByLogin(login: String): Result<User> {
         return try {
             val query: TypedQuery<User> = entityManager
