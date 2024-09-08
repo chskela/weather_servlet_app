@@ -1,10 +1,12 @@
 package models.dao
 
+import exception.LocationExistsException
 import jakarta.persistence.EntityManager
 import jakarta.persistence.TypedQuery
 import models.database.PersistenceUtil
 import models.entities.Location
 import models.entities.User
+import org.hibernate.exception.ConstraintViolationException
 
 class LocationDao(
     private val entityManager: EntityManager = PersistenceUtil.entityManagerFactory.createEntityManager()
@@ -25,6 +27,11 @@ class LocationDao(
             txn.begin()
             entityManager.merge(location)
         }.onSuccess { txn.commit() }
-            .onFailure { txn.rollback() }
+            .onFailure { e ->
+                txn.rollback()
+                if (e is ConstraintViolationException) {
+                    throw LocationExistsException(location.name)
+                }
+            }
     }
 }
