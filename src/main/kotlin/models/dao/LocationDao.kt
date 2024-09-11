@@ -34,4 +34,27 @@ class LocationDao(
                 }
             }
     }
+
+    fun removeLocationByCoordinateForUser(location: Location): Result<Int> {
+        val txn = entityManager.transaction
+
+        return runCatching {
+            txn.begin()
+            entityManager
+                .createQuery(
+                    "DELETE FROM Location " +
+                            "WHERE latitude = :latitude " +
+                            "AND longitude = :longitude " +
+                            "AND user = :user"
+                )
+                .setParameter("latitude", location.latitude)
+                .setParameter("longitude", location.longitude)
+                .setParameter("user", location.user)
+                .executeUpdate()
+        }.onSuccess {
+            txn.commit()
+            entityManager.clear()
+        }
+            .onFailure { txn.rollback() }
+    }
 }

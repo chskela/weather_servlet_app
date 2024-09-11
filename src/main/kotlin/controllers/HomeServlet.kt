@@ -70,15 +70,27 @@ class HomeServlet(
         val name = request.getParameter("name")
         val latitude = request.getParameter("lat").toDouble()
         val longitude = request.getParameter("lon").toDouble()
+        val remove = request.getParameter("remove")
 
-        locationDao.insert(
-            Location(
-                name = name,
-                user = user,
-                latitude = latitude,
-                longitude = longitude
+        if (remove != null) {
+            locationDao.removeLocationByCoordinateForUser(
+                Location(
+                    name = name,
+                    user = user,
+                    latitude = latitude,
+                    longitude = longitude
+                )
             )
-        )
+        } else {
+            locationDao.insert(
+                Location(
+                    name = name,
+                    user = user,
+                    latitude = latitude,
+                    longitude = longitude
+                )
+            )
+        }
 
         response.sendRedirect("/")
     }

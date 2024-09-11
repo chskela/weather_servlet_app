@@ -106,4 +106,25 @@ class LocationDaoTest {
         assertNotNull(locations)
         assertEquals(locations.size, 10)
     }
+
+    @Test
+    fun `remove Location should returned removed 1`() {
+        //when
+        val addedUser = userDao.insert(candidate.toUser()).getOrThrow()
+        val latitude = 50.0
+        val longitude = 60.0
+        val locationName = "Test"
+        val location  = Location(
+            name = locationName,
+            user = addedUser,
+            latitude = latitude,
+            longitude = longitude
+        )
+        locationDao.insert(location)
+
+        val result = locationDao.removeLocationByCoordinateForUser(location).getOrThrow()
+
+        //then
+        assertEquals(result, 1)
+    }
 }
