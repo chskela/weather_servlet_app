@@ -12,6 +12,7 @@ import utils.Constants.PASSWORD
 import utils.Constants.PASSWORD_CONFIRMATION
 import utils.Constants.SESSION_ID
 import utils.Constants.SIGN_UP
+import utils.PasswordUtils
 
 @WebServlet(name = "SignUpServlet", urlPatterns = ["/sign-up"])
 class SignUpServlet(private val authorizationService: AuthorizationService = AuthorizationService()) : BaseServlet() {
@@ -33,6 +34,17 @@ class SignUpServlet(private val authorizationService: AuthorizationService = Aut
 
             password.isNullOrBlank() || passwordAgain.isNullOrBlank() -> {
                 context.setVariable(ERROR, "Password cannot be blank")
+                templateEngine.process(SIGN_UP, context, response.writer)
+            }
+
+            !PasswordUtils.validatePassword(password) -> {
+                context.setVariable(ERROR, """
+                    Password length from 8 to 32 characters. 
+                    Password complexity: 
+                    presence of characters from three categories: uppercase, 
+                    lowercase and non-alphabetic characters (numbers).
+                    """.trimMargin())
+                context.setVariable(EMAIL, email)
                 templateEngine.process(SIGN_UP, context, response.writer)
             }
 
