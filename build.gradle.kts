@@ -30,6 +30,8 @@ dependencies {
 
     implementation(libs.coroutines)
 
+    implementation(libs.password4j)
+
     testImplementation(kotlin("test"))
     // https://mvnrepository.com/artifact/com.h2database/h2
     testImplementation(libs.h2)
