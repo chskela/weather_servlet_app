@@ -15,8 +15,8 @@
     <div th:replace="~{header :: navbar}"></div>
     <div>
         <h1>Weather Forecast Servlet Application!</h1>
-        <div class="row row-cols-3 g-3" th:each="location : ${locationsList}">
-            <div class="col">
+        <div class="row row-cols-3 g-3">
+            <div class="col" th:each="location : ${locationsList}">
                 <div class="card h-100">
                     <div class="card-body">
                         <h5 class="card-title" th:text="${location.name}">Moscow</h5>

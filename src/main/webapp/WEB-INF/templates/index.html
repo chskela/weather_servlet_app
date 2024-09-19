@@ -15,8 +15,8 @@
     <div th:replace="~{header :: navbar}"></div>
     <div>
         <h1>Weather Forecast Servlet Application!</h1>
-        <div class="row row-cols-3 g-3" th:each="weather : ${weathers}">
-            <div class="col">
+        <div class="row row-cols-3 g-3">
+            <div class="col" th:each="weather : ${weathers}">
                 <div class="card h-100">
                     <div class="col-md-3 text-start align-self-center">
                         <img alt="weather" class="card-img-top" src="" th:src="'https:' + ${weather.icon}">
