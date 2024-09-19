@@ -11,4 +11,8 @@ object PasswordUtils {
     fun verifyPassword(password: String, hash: String): Boolean {
         return Password.check(password, hash).withArgon2()
     }
+
+    fun validatePassword(password: String): Boolean {
+        return password.length in 8..32 && password.contains("(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!#\$%&? \"])".toRegex())
+    }
 }
