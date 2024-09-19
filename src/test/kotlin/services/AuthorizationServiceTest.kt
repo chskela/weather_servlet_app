@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import services.dto.AuthorizationDTO
 import services.dto.toUser
-import utils.md5
+import utils.PasswordUtils
 import java.time.LocalDateTime
 
 class AuthorizationServiceTest {
@@ -43,7 +43,7 @@ class AuthorizationServiceTest {
     @Test
     fun `test signIn with correct credentials`() {
         //when
-        val insertedUser = userDao.insert(candidate.copy(password = candidate.password).toUser()).getOrThrow()
+        val insertedUser = userDao.insert(candidate.copy(password = PasswordUtils.hashPassword(candidate.password)).toUser()).getOrThrow()
         val result = authorizationService.signIn(candidate).getOrThrow()
 
         //then
@@ -62,7 +62,7 @@ class AuthorizationServiceTest {
     @Test
     fun `test signIn with incorrect password should throw PasswordWrongException`() {
         //when
-        userDao.insert(candidate.copy(password = candidate.password).toUser())
+        userDao.insert(candidate.copy(password = PasswordUtils.hashPassword(candidate.password)).toUser())
         val authorizationDto = candidate.copy(password = "wrongPassword")
 
         // then
@@ -83,7 +83,7 @@ class AuthorizationServiceTest {
     @Test
     fun `test signUp with existed login should throw UserExistsException`() {
         //when
-        userDao.insert(candidate.copy(password = candidate.password.md5()).toUser())
+        userDao.insert(candidate.copy(password = PasswordUtils.hashPassword(candidate.password)).toUser())
 
         //then
         assertThrows<UserExistsException> { authorizationService.signUp(candidate).getOrThrow() }
@@ -92,7 +92,8 @@ class AuthorizationServiceTest {
     @Test
     fun `test logout`() {
         //when
-        val user = userDao.insert(candidate.copy(password = candidate.password.md5()).toUser()).getOrThrow()
+        val user = userDao.insert(candidate.copy(password = PasswordUtils.hashPassword(candidate.password)).toUser())
+            .getOrThrow()
         val result = sessionDao.insert(
             Session(user = user, expiresAt = LocalDateTime.now().withHour(1))
         ).getOrThrow()

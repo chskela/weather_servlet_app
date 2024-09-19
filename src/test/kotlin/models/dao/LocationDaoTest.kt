@@ -114,7 +114,7 @@ class LocationDaoTest {
         val latitude = 50.0
         val longitude = 60.0
         val locationName = "Test"
-        val location  = Location(
+        val location = Location(
             name = locationName,
             user = addedUser,
             latitude = latitude,
