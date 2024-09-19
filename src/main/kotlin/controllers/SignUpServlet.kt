@@ -12,6 +12,7 @@ import utils.Constants.PASSWORD
 import utils.Constants.PASSWORD_CONFIRMATION
 import utils.Constants.SESSION_ID
 import utils.Constants.SIGN_UP
+import utils.LoginUtils
 import utils.PasswordUtils
 
 @WebServlet(name = "SignUpServlet", urlPatterns = ["/sign-up"])
@@ -27,13 +28,10 @@ class SignUpServlet(private val authorizationService: AuthorizationService = Aut
         val passwordAgain = request.getParameter(PASSWORD_CONFIRMATION)
 
         when {
-            email.isNullOrBlank() -> {
-                context.setVariable(ERROR, "Email cannot be blank")
-                templateEngine.process(SIGN_UP, context, response.writer)
-            }
-
-            password.isNullOrBlank() || passwordAgain.isNullOrBlank() -> {
-                context.setVariable(ERROR, "Password cannot be blank")
+            !LoginUtils.validateLogin(email)-> {
+                context.setVariable(ERROR, """
+                    Email addresses according to RFC 5322 (precluding comments).
+                    """.trimMargin())
                 templateEngine.process(SIGN_UP, context, response.writer)
             }
 
