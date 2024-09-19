@@ -4,7 +4,8 @@ import exception.SessionNotFoundException
 import jakarta.persistence.EntityManager
 import models.database.TestContainerConfig
 import models.entities.Session
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -13,7 +14,7 @@ import services.dto.toUser
 import java.time.LocalDateTime
 import java.util.*
 
-class SessionDaoTest{
+class SessionDaoTest {
     val entityManager: EntityManager = TestContainerConfig.entityManagerFactory.createEntityManager()
     private val userDao = UserDao(entityManager)
     private val sessionDao = SessionDao(entityManager)
@@ -35,7 +36,7 @@ class SessionDaoTest{
     }
 
     @Test
-    fun `insert new Session should returned added Session`(){
+    fun `insert new Session should returned added Session`() {
         //when
         val addedUser = userDao.insert(candidate.toUser()).getOrThrow()
         val session = Session(user = addedUser, expiresAt = LocalDateTime.now().withHour(1))
@@ -50,7 +51,7 @@ class SessionDaoTest{
 
 
     @Test
-    fun `remove existing Session by UUID should returned removed 1`(){
+    fun `remove existing Session by UUID should returned removed 1`() {
         //when
         val addedUser = userDao.insert(candidate.toUser()).getOrThrow()
         val session = Session(user = addedUser, expiresAt = LocalDateTime.now().withHour(1))
@@ -63,7 +64,7 @@ class SessionDaoTest{
 
 
     @Test
-    fun `find existing Session by UUID should returned Session`(){
+    fun `find existing Session by UUID should returned Session`() {
         //when
         val addedUser = userDao.insert(candidate.toUser()).getOrThrow()
         val session = Session(user = addedUser, expiresAt = LocalDateTime.now().withHour(1))
@@ -78,7 +79,7 @@ class SessionDaoTest{
     }
 
     @Test
-    fun `find not existing Session by UUID should thrown SessionNotFoundException`(){
+    fun `find not existing Session by UUID should thrown SessionNotFoundException`() {
         //when
         val fakeUuid = UUID.randomUUID()
 

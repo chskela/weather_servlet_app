@@ -19,7 +19,7 @@ object TestContainerConfig {
     init {
         postgres.start()
 
-        val jdbcUrl: String = postgres.getJdbcUrl()
+        val jdbcUrl: String = postgres.jdbcUrl
         val jdbcUser: String = postgres.username
         val jdbcPassword: String = postgres.password
 

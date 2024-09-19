@@ -6,6 +6,7 @@ import models.dao.UserDao
 import models.entities.Session
 import services.dto.AuthorizationDTO
 import services.dto.toUser
+import utils.PasswordUtils
 import java.time.LocalDateTime
 import java.util.*
 
@@ -18,7 +19,7 @@ class AuthorizationService(
             return Result.failure(e)
         }
 
-        if (authorizationDto.password != user.password) {
+        if (!PasswordUtils.verifyPassword(authorizationDto.password, user.password)) {
             return Result.failure(PasswordWrongException())
         }
         return sessionDao
@@ -27,7 +28,7 @@ class AuthorizationService(
 
     fun signUp(authorizationDto: AuthorizationDTO): Result<Session> {
         return userDao
-            .insert(authorizationDto.toUser())
+            .insert(authorizationDto.copy(password = PasswordUtils.hashPassword(authorizationDto.password)).toUser())
             .map { user ->
                 sessionDao
                     .insert(Session(user = user, expiresAt = LocalDateTime.now().withHour(1)))
