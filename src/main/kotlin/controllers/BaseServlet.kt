@@ -86,5 +86,5 @@ abstract class BaseServlet : HttpServlet() {
         } else Result.failure(CookieNotFoundException(sessionId))
     }
 
-    protected fun isBadSession(session: Session): Boolean = session.expiresAt.isAfter(LocalDateTime.now())
+    protected fun isBadSession(session: Session): Boolean = session.expiresAt.isBefore(LocalDateTime.now())
 }
