@@ -54,14 +54,13 @@ class SessionDao(
 
         return runCatching {
             txn.begin()
-            val result = entityManager
+            entityManager
                 .createQuery("DELETE FROM Session WHERE expiresAt <= :time")
                 .setParameter("time", time)
                 .executeUpdate()
-            entityManager.flush()
-            result
         }.onSuccess {
             txn.commit()
+            entityManager.clear()
         }
             .onFailure { txn.rollback() }
     }

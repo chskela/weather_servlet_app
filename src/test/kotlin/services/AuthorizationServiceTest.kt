@@ -43,7 +43,9 @@ class AuthorizationServiceTest {
     @Test
     fun `test signIn with correct credentials`() {
         //when
-        val insertedUser = userDao.insert(candidate.copy(password = PasswordUtils.hashPassword(candidate.password)).toUser()).getOrThrow()
+        val insertedUser = userDao
+            .insert(candidate.copy(password = PasswordUtils.hashPassword(candidate.password)).toUser())
+            .getOrThrow()
         val result = authorizationService.signIn(candidate).getOrThrow()
 
         //then
