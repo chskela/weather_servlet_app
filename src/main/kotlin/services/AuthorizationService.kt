@@ -23,7 +23,7 @@ class AuthorizationService(
             return Result.failure(PasswordWrongException())
         }
         return sessionDao
-            .insert(Session(user = user, expiresAt = LocalDateTime.now().withHour(1)))
+            .insert(Session(user = user, expiresAt = localDateTimePlusDay()))
     }
 
     fun signUp(authorizationDto: AuthorizationDTO): Result<Session> {
@@ -31,7 +31,7 @@ class AuthorizationService(
             .insert(authorizationDto.copy(password = PasswordUtils.hashPassword(authorizationDto.password)).toUser())
             .map { user ->
                 sessionDao
-                    .insert(Session(user = user, expiresAt = LocalDateTime.now().withHour(1)))
+                    .insert(Session(user = user, expiresAt = localDateTimePlusDay()))
                     .getOrThrow()
             }
     }
@@ -39,4 +39,6 @@ class AuthorizationService(
     fun logout(uuid: UUID) {
         sessionDao.removeSessionById(uuid)
     }
+
+    private fun localDateTimePlusDay(): LocalDateTime = LocalDateTime.now().plusDays(1)
 }
