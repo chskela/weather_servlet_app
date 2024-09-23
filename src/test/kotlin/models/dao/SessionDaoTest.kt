@@ -86,4 +86,16 @@ class SessionDaoTest {
         //then
         assertThrows<SessionNotFoundException> { sessionDao.findSessionById(fakeUuid).getOrThrow() }
     }
+
+    @Test
+    fun `remove existing Session expired at time should returned removed 1`() {
+        //when
+        val addedUser = userDao.insert(candidate.toUser()).getOrThrow()
+        val session = Session(user = addedUser, expiresAt = LocalDateTime.now())
+        sessionDao.insert(session).getOrThrow()
+        val result = sessionDao.removeSessionExpiredAtTime(LocalDateTime.now()).getOrThrow()
+
+        //then
+        assertEquals(1, result)
+    }
 }

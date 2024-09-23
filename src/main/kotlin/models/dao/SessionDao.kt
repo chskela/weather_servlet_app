@@ -4,6 +4,7 @@ import exception.SessionNotFoundException
 import jakarta.persistence.EntityManager
 import models.database.PersistenceUtil
 import models.entities.Session
+import java.time.LocalDateTime
 import java.util.*
 
 class SessionDao(
@@ -44,6 +45,23 @@ class SessionDao(
         }.onSuccess {
             txn.commit()
             entityManager.clear()
+        }
+            .onFailure { txn.rollback() }
+    }
+
+    fun removeSessionExpiredAtTime(time: LocalDateTime): Result<Int> {
+        val txn = entityManager.transaction
+
+        return runCatching {
+            txn.begin()
+            val result = entityManager
+                .createQuery("DELETE FROM Session WHERE expiresAt <= :time")
+                .setParameter("time", time)
+                .executeUpdate()
+            entityManager.flush()
+            result
+        }.onSuccess {
+            txn.commit()
         }
             .onFailure { txn.rollback() }
     }
