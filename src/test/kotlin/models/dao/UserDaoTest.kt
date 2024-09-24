@@ -14,7 +14,7 @@ import services.dto.toUser
 
 class UserDaoTest {
 
-    private val entityManager: EntityManager = TestContainerConfig.entityManagerFactory.createEntityManager()
+    private val entityManager: EntityManager = TestContainerConfig().entityManagerFactory.createEntityManager()
     private val userDao = UserDao(entityManager)
 
     private val candidate: AuthorizationDTO = AuthorizationDTO("test@gmail.com", "password")

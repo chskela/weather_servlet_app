@@ -15,7 +15,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 class SessionDaoTest {
-    val entityManager: EntityManager = TestContainerConfig.entityManagerFactory.createEntityManager()
+    val entityManager: EntityManager = TestContainerConfig().entityManagerFactory.createEntityManager()
     private val userDao = UserDao(entityManager)
     private val sessionDao = SessionDao(entityManager)
 
@@ -49,7 +49,6 @@ class SessionDaoTest {
         assertEquals(addedSession.user.login, candidate.email)
     }
 
-
     @Test
     fun `remove existing Session by UUID should returned removed 1`() {
         //when
@@ -61,7 +60,6 @@ class SessionDaoTest {
         //then
         assertEquals(1, result)
     }
-
 
     @Test
     fun `find existing Session by UUID should returned Session`() {

@@ -10,7 +10,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
 import kotlin.test.assertTrue
 
 @Testcontainers
-object TestContainerConfig {
+class TestContainerConfig {
     private val config: MutableMap<String, String> = HashMap()
 
     @Container

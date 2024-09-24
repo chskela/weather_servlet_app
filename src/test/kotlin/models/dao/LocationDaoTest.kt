@@ -14,7 +14,7 @@ import services.dto.toUser
 import kotlin.random.Random
 
 class LocationDaoTest {
-    private val entityManager: EntityManager = TestContainerConfig.entityManagerFactory.createEntityManager()
+    private val entityManager: EntityManager = TestContainerConfig().entityManagerFactory.createEntityManager()
     private val userDao = UserDao(entityManager)
     private val locationDao = LocationDao(entityManager)
 

@@ -19,7 +19,7 @@ import utils.PasswordUtils
 import java.time.LocalDateTime
 
 class AuthorizationServiceTest {
-    private val entityManager: EntityManager = TestContainerConfig.entityManagerFactory.createEntityManager()
+    private val entityManager: EntityManager = TestContainerConfig().entityManagerFactory.createEntityManager()
     private val userDao = UserDao(entityManager)
     private val sessionDao = SessionDao(entityManager)
     private val authorizationService = AuthorizationService(userDao, sessionDao)
