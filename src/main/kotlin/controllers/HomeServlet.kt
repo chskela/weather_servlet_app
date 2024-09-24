@@ -1,19 +1,13 @@
 package controllers
 
-import api.WeatherRepository
-import api.repository.WeatherRepositoryImpl
 import exception.BadSessionException
 import jakarta.servlet.annotation.WebServlet
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.runBlocking
 import models.dao.LocationDao
 import models.dao.SessionDao
 import models.entities.Location
-import services.toWeatherDTO
+import services.WeatherService
 import utils.Constants.INDEX
 import utils.Constants.LOGIN
 import utils.Constants.SESSION_ID
@@ -25,7 +19,7 @@ import java.util.*
 class HomeServlet(
     private val locationDao: LocationDao = LocationDao(),
     private val sessionDao: SessionDao = SessionDao(),
-    private val weatherRepository: WeatherRepository = WeatherRepositoryImpl(),
+    private val weatherService: WeatherService = WeatherService(),
 ) : BaseServlet() {
 
     override fun doGet(request: HttpServletRequest, response: HttpServletResponse) {
@@ -39,16 +33,8 @@ class HomeServlet(
         val user = session.user
 
         val weatherList: List<WeatherDTO> = locationDao.getAllLocationsByUserId(user)
-            .map { locations ->
-                runBlocking(Dispatchers.IO) {
-                    locations.map { location ->
-                        async {
-                            weatherRepository.getWeatherByCoordinates(location.latitude, location.longitude)
-                        }
-                    }.awaitAll()
-                        .map { weatherResponse -> weatherResponse.toWeatherDTO() }
-                }
-            }.getOrThrow()
+            .map { coordinates -> weatherService.getWeatherByCoordinates(coordinates) }
+            .getOrThrow()
 
         context.setVariable(WEATHERS, weatherList)
         context.setVariable(LOGIN, user.login)

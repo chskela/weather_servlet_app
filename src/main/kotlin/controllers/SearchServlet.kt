@@ -1,13 +1,12 @@
 package controllers
 
-import api.WeatherRepository
 import api.dto.request.Geocoding
-import api.repository.WeatherRepositoryImpl
 import exception.BadSessionException
 import jakarta.servlet.annotation.WebServlet
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import models.dao.SessionDao
+import services.WeatherService
 import utils.Constants.LOCATIONS_LIST
 import utils.Constants.LOGIN
 import utils.Constants.SEARCH_RESULT
@@ -17,7 +16,7 @@ import java.util.*
 @WebServlet(name = "SearchServlet", urlPatterns = ["/search"])
 class SearchServlet(
     private val sessionDao: SessionDao = SessionDao(),
-    private val weatherRepository: WeatherRepository = WeatherRepositoryImpl()
+    private val weatherService: WeatherService = WeatherService(),
 ) : BaseServlet() {
 
     override fun doGet(request: HttpServletRequest, response: HttpServletResponse) {
@@ -36,7 +35,7 @@ class SearchServlet(
         if (searchRequest.isBlank()) {
             response.sendRedirect("/")
         } else {
-            val locationsList: List<Geocoding> = weatherRepository.getLocationListByName(searchRequest)
+            val locationsList: List<Geocoding> = weatherService.getLocationListByName(searchRequest)
 
             context.setVariable(LOCATIONS_LIST, locationsList)
             context.setVariable(LOGIN, user.login)
