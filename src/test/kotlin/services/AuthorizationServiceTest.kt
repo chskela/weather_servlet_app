@@ -13,8 +13,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import services.dto.AuthorizationDTO
-import services.dto.toUser
+import views.dto.AuthorizationDTO
 import utils.PasswordUtils
 import java.time.LocalDateTime
 

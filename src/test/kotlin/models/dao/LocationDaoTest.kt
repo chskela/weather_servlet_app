@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import services.dto.AuthorizationDTO
-import services.dto.toUser
+import services.toUser
+import views.dto.AuthorizationDTO
 import kotlin.random.Random
 
 class LocationDaoTest {

@@ -4,8 +4,8 @@ import exception.PasswordWrongException
 import models.dao.SessionDao
 import models.dao.UserDao
 import models.entities.Session
-import services.dto.AuthorizationDTO
-import services.dto.toUser
+import models.entities.User
+import views.dto.AuthorizationDTO
 import utils.PasswordUtils
 import java.time.LocalDateTime
 import java.util.*
@@ -42,3 +42,5 @@ class AuthorizationService(
 
     private fun localDateTimePlusDay(): LocalDateTime = LocalDateTime.now().plusDays(1)
 }
+
+fun AuthorizationDTO.toUser() = User(login = email, password = password)

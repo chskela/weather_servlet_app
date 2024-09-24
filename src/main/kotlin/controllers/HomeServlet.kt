@@ -13,11 +13,11 @@ import kotlinx.coroutines.runBlocking
 import models.dao.LocationDao
 import models.dao.SessionDao
 import models.entities.Location
+import services.toWeatherDTO
 import utils.Constants.INDEX
 import utils.Constants.LOGIN
 import utils.Constants.SESSION_ID
 import utils.Constants.WEATHERS
-import utils.toWeatherDTO
 import views.dto.WeatherDTO
 import java.util.*
 

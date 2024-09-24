@@ -7,7 +7,7 @@ import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import services.AuthorizationService
-import services.dto.AuthorizationDTO
+import views.dto.AuthorizationDTO
 import utils.Constants.EMAIL
 import utils.Constants.EMAIL_CANNOT_BE_BLANK
 import utils.Constants.ERROR
