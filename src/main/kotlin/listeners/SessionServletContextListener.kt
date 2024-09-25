@@ -7,11 +7,12 @@ import services.SessionService
 import java.util.*
 
 @WebListener
-class SessionServletContextListener(private val sessionService: SessionService = SessionService()) : ServletContextListener {
+class SessionServletContextListener(private val sessionService: SessionService = SessionService()) :
+    ServletContextListener {
+
     override fun contextInitialized(sce: ServletContextEvent?) {
         val calendar = Calendar.getInstance()
         val date = calendar.time
-        println("SessionServletContextListener !!!!!!!!!!!!!!!")
         sessionService.removeSessionExpiredAtTime(date)
     }
 }
