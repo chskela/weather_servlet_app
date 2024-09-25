@@ -5,8 +5,8 @@ import models.dao.SessionDao
 import models.dao.UserDao
 import models.entities.Session
 import models.entities.User
-import views.dto.AuthorizationDTO
 import utils.PasswordUtils
+import views.dto.AuthorizationDTO
 import java.time.LocalDateTime
 import java.util.*
 

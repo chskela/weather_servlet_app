@@ -7,7 +7,6 @@ import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import services.AuthorizationService
-import views.dto.AuthorizationDTO
 import utils.Constants.EMAIL
 import utils.Constants.EMAIL_CANNOT_BE_BLANK
 import utils.Constants.ERROR
@@ -17,6 +16,7 @@ import utils.Constants.PASSWORD_DOES_NOT_MATCH
 import utils.Constants.SESSION_ID
 import utils.Constants.SIGN_IN
 import utils.Constants.USER_DOES_NOT_EXIST
+import views.dto.AuthorizationDTO
 
 @WebServlet(name = "SignInServlet", urlPatterns = ["/sign-in"])
 class SignInServlet(private val authorizationService: AuthorizationService = AuthorizationService()) : BaseServlet() {
