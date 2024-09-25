@@ -1,6 +1,7 @@
 package controllers
 
 import exception.BadSessionException
+import exception.WeatherApiException
 import jakarta.servlet.annotation.WebServlet
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -33,7 +34,11 @@ class HomeServlet(
         val user = session.user
 
         val weatherList: List<WeatherDTO> = locationDao.getAllLocationsByUserId(user)
-            .map { coordinates -> weatherService.getWeatherByCoordinates(coordinates) }
+            .map { coordinates ->
+                weatherService.getWeatherByCoordinates(coordinates)
+                    .onFailure { e -> throw WeatherApiException(e.toString()) }
+                    .getOrThrow()
+            }
             .getOrThrow()
 
         context.setVariable(WEATHERS, weatherList)

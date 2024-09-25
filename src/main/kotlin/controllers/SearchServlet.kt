@@ -2,6 +2,7 @@ package controllers
 
 import api.dto.request.Geocoding
 import exception.BadSessionException
+import exception.WeatherApiException
 import jakarta.servlet.annotation.WebServlet
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -36,6 +37,8 @@ class SearchServlet(
             response.sendRedirect("/")
         } else {
             val locationsList: List<Geocoding> = weatherService.getLocationListByName(searchRequest)
+                .onFailure { e -> throw WeatherApiException(e.toString()) }
+                .getOrThrow()
 
             context.setVariable(LOCATIONS_LIST, locationsList)
             context.setVariable(LOGIN, user.login)

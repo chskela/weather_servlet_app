@@ -1,10 +1,7 @@
 package controllers
 
 import api.dto.response.WeatherResponse
-import exception.BadSessionException
-import exception.CookieNotFoundException
-import exception.SessionNotFoundException
-import exception.UserExistsException
+import exception.*
 import jakarta.servlet.ServletConfig
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServlet
@@ -55,6 +52,16 @@ abstract class BaseServlet : HttpServlet() {
                 is UserExistsException -> {
                     context.setVariable(ERROR, e.message)
                     templateEngine.process(SIGN_UP, context, resp.writer)
+                }
+
+                is WeatherApiException -> {
+                    println("is WeatherApiException")
+                    context.setVariable(WEATHERS, emptyList<WeatherResponse>())
+                    context.setVariable(
+                        ERROR,
+                        "The weather service is temporarily unavailable, please try again later."
+                    )
+                    templateEngine.process(INDEX, context, resp.writer)
                 }
 
                 else -> {
