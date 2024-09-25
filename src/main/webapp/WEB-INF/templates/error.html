@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="utf-8">
@@ -13,6 +13,7 @@
 <div class="container my-5 py-5">
     <!-- Error message -->
     <p class="text-center mb-4">Something went wrong.</p>
+    <div class="text-center mt-3"><span class="text-danger" th:text="${error}? ${error}">error</span></div>
     <!-- Button to go back home -->
     <div class="d-grid gap-2 col-6 mx-auto">
         <a class="btn btn-primary" href="/">Go back home</a>

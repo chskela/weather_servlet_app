@@ -55,13 +55,11 @@ abstract class BaseServlet : HttpServlet() {
                 }
 
                 is WeatherApiException -> {
-                    println("is WeatherApiException")
-                    context.setVariable(WEATHERS, emptyList<WeatherResponse>())
                     context.setVariable(
                         ERROR,
                         "The weather service is temporarily unavailable, please try again later."
                     )
-                    templateEngine.process(INDEX, context, resp.writer)
+                    templateEngine.process(ERROR, context, resp.writer)
                 }
 
                 else -> {
