@@ -85,7 +85,7 @@ class WeatherServiceTest {
 
         whenever(weatherRepository.getWeatherByCoordinates(any(), any())).thenReturn(weatherResponse1, weatherResponse2)
 
-        val result = weatherService.getWeatherByCoordinates(coordinates)
+        val result = weatherService.getWeatherByCoordinates(coordinates).getOrThrow()
 
         assertEquals(setOf(weatherDTO1, weatherDTO2), result.toSet())
     }
@@ -98,7 +98,7 @@ class WeatherServiceTest {
 
         whenever(weatherRepository.getLocationListByName(any())).thenReturn(listOf(geocoding1, geocoding2))
 
-        val result = weatherService.getLocationListByName(name)
+        val result = weatherService.getLocationListByName(name).getOrThrow()
 
         assertEquals(listOf(geocoding1, geocoding2), result)
     }
