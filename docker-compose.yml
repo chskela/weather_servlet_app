@@ -3,8 +3,8 @@ services:
     build: .
     environment:
       JAKARTA_PERSISTENCE_JDBC_URL: jdbc:postgresql://db:5432/weather_servlet_app
-      JAKARTA_PERSISTENCE_JDBC_USER: postgres
-      JAKARTA_PERSISTENCE_JDBC_PASSWORD: postgres
+      JAKARTA_PERSISTENCE_JDBC_USER: ${POSTGRES_USER}
+      JAKARTA_PERSISTENCE_JDBC_PASSWORD: ${POSTGRES_PASSWORD}
       HIBERNATE_DDL_AUTO: update
       WEATHER_API_KEY: ${WEATHER_API_KEY}
     ports:
